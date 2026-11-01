@@ -9,7 +9,7 @@
 <title>Echoes of Angmar Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
 /* Layout: an editorial site that reads from morning to night. Sections are solid tones joined by short gradient
    seams (Shire parchment → Angmar black). Four views share one header and footer, switched by the URL hash. */
@@ -106,6 +106,14 @@ figcaption{font-style:italic;font-size:.88rem;line-height:1.4;margin-top:10px}
 .facts{list-style:none;margin:0;padding:0;border-top:1px solid rgba(43,33,22,.3)}
 .facts li{padding:10px 0;border-bottom:1px solid rgba(43,33,22,.3);display:grid;grid-template-columns:minmax(0,9rem) 1fr;gap:12px}
 .facts b{font-weight:500}
+.classes{margin-top:52px}
+.classes .intro{margin-bottom:22px}
+.classes h3{font-family:var(--f-head);font-weight:500;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.1;margin:0}
+.class-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px}
+.class-grid li{border:1px solid rgba(43,33,22,.3);background:rgba(250,244,228,.32);padding:20px 10px 16px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.class-grid img{width:68px;height:68px;margin-bottom:12px}
+.class-grid b{font-family:var(--f-head);font-weight:600;font-size:1.28rem;line-height:1.15;letter-spacing:.02em}
+.class-grid span{font-size:.9rem;line-height:1.35;color:var(--ink-soft);margin-top:4px;text-wrap:balance}
 
 .eriador{position:relative;isolation:isolate;background:var(--dusk);color:var(--pale)}
 .eriador::before{content:"";position:absolute;inset:0;z-index:-1;background:url(art/eriador-map.jpg) center 30%/min(1600px,180%) auto no-repeat;filter:invert(1);mix-blend-mode:screen;opacity:.09}
@@ -306,11 +314,25 @@ footer p{margin:0;max-width:92ch}
           <figcaption>Rivendell. In-game, <i>The Lord of the Rings Online</i>.</figcaption>
         </figure>
         <ul class="facts">
-          <li><b>Classes</b><span>Burglar, Captain, Champion, Guardian, Hunter, Lore-master, Minstrel</span></li>
           <li><b>Peoples</b><span>Man, Elf, Dwarf, Hobbit</span></li>
           <li><b>Story</b><span>The original Volume I epic</span></li>
         </ul>
       </div>
+    </div>
+    <div class="classes">
+      <div class="intro">
+        <h3 id="h-classes">The seven classes</h3>
+        <p>Every class from Shadows of Angmar, as it played then. The Warden and Runekeeper came later, with Mines of Moria.</p>
+      </div>
+      <ul class="class-grid" aria-labelledby="h-classes">
+        <li><img src="art/classes/burglar.png" width="120" height="120" alt=""><b>Burglar</b><span>Tricksters &amp; Opportunists</span></li>
+        <li><img src="art/classes/captain.png" width="120" height="120" alt=""><b>Captain</b><span>Leaders &amp; Banner-bearers</span></li>
+        <li><img src="art/classes/champion.png" width="120" height="120" alt=""><b>Champion</b><span>Blademasters &amp; Berserkers</span></li>
+        <li><img src="art/classes/guardian.png" width="120" height="120" alt=""><b>Guardian</b><span>Shield-bearers &amp; Protectors</span></li>
+        <li><img src="art/classes/hunter.png" width="120" height="120" alt=""><b>Hunter</b><span>Archers &amp; Trackers</span></li>
+        <li><img src="art/classes/lore-master.png" width="120" height="120" alt=""><b>Lore-master</b><span>Sages &amp; Beast-friends</span></li>
+        <li><img src="art/classes/minstrel.png" width="120" height="120" alt=""><b>Minstrel</b><span>Healers &amp; Song-weavers</span></li>
+      </ul>
     </div>
   </div></section>
 
@@ -514,7 +536,7 @@ footer p{margin:0;max-width:92ch}
 <footer class="gutter"><div class="wrap">
   <nav aria-label="Footer"><a href="#home">About</a><a href="#faq">FAQ</a><a href="#home">Discord</a><a href="#sign-in">Sign in</a><a href="#create-account">Create account</a></nav>
   <p>Echoes of Angmar is a fan-run project. It is not affiliated with Standing Stone Games, Daybreak Games or Middle-earth Enterprises. The Lord of the Rings Online and Shadows of Angmar are trademarks of Middle-earth Enterprises.</p>
-  <p>Mockup artwork: J.R.R. Tolkien (Tolkien Estate), Alan Lee, Ted Nasmith, and in-game screenshots of The Lord of the Rings Online. Used here for internal demonstration only; replace before publishing.</p>
+  <p>Mockup artwork: J.R.R. Tolkien (Tolkien Estate), Alan Lee, Ted Nasmith, and in-game screenshots and class icons from The Lord of the Rings Online. Used here for internal demonstration only; replace before publishing.</p>
 </div></footer>
 
 <script>
