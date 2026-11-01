@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Echoes of Angmar website mockup: home, FAQ, sign in and create account.">
+<link rel="icon" type="image/png" href="art/eoa-logo.png">
+<title>Echoes of Angmar Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: an editorial site that reads from morning to night. Sections are solid tones joined by short gradient
+   seams (Shire parchment → Angmar black). Four views share one header and footer, switched by the URL hash. */
+:root{
+  --dawn:#f2ead6; --morning:#e8dbbd; --afternoon:#d6bf95; --dusk:#3b3141; --night:#07090d;
+  --ink:#2b2116; --ink-soft:#5f4c36; --red:#7d2416; --gold:#b48a3c; --error:#9a2412;
+  --pale:#ece2cc; --pale-soft:#b9ad9a; --field:#fbf6ea;
+  --f-head:"Cormorant Garamond", "EB Garamond", Georgia, serif;
+  --f-body:"EB Garamond", Georgia, serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--dawn);color:var(--ink);font:19px/1.65 var(--f-body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--dawn)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.gutter{padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.wrap{max-width:1200px;margin-inline:auto;width:100%}
+h1,h2{font-family:var(--f-head);font-weight:500;line-height:1.08;letter-spacing:.005em;margin:0 0 18px;text-wrap:balance}
+h2{font-size:clamp(2rem,4.2vw,3.1rem)}
+p{margin:0 0 1em}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+figure{margin:0}
+figcaption{font-style:italic;font-size:.88rem;line-height:1.4;margin-top:10px}
+.tbc{text-decoration:underline dotted;text-decoration-color:rgba(125,36,22,.65);text-underline-offset:4px;text-decoration-thickness:1.5px}
+
+/* review strip */
+.review{background:var(--ink);color:#d9ccb2;font-size:.85rem;padding-block:7px}
+.review .wrap{display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:space-between;align-items:baseline}
+.review nav{display:flex;flex-wrap:wrap;gap:2px 14px}
+.review nav a{color:#d9ccb2;text-decoration:none;border-bottom:1px solid transparent}
+.review nav a[aria-current="page"]{color:#fff;border-bottom-color:var(--gold)}
+
+/* header */
+.top{background:var(--dawn);border-bottom:1px solid rgba(43,33,22,.14)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px 28px;flex-wrap:wrap;padding-block:12px}
+.top .home-link{display:block}
+.top .mark{width:132px}
+.top nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:4px 26px;list-style:none;margin:0;padding:0}
+.top nav a,.top nav button{font-size:1rem;color:var(--ink-soft);text-decoration:none}
+.top nav a:hover,.top nav button:hover{color:var(--red)}
+.top nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold)}
+.top nav .join{color:var(--red);border:1px solid rgba(125,36,22,.5);padding:4px 14px;border-radius:2px}
+.top nav .join[aria-current="page"]{text-decoration:none;background:rgba(125,36,22,.08)}
+
+/* buttons */
+.btn{display:inline-block;font-size:1.05rem;padding:11px 24px;border-radius:2px;text-decoration:none;transition:background .2s,border-color .2s,color .2s}
+.btn-red{background:var(--red);color:var(--pale)}
+.btn-red:hover{background:#62190e}
+.btn-quiet{border:1px solid rgba(43,33,22,.35)}
+.btn-quiet:hover{border-color:var(--ink)}
+.btn-pale{background:var(--pale);color:var(--ink)}
+.btn-pale:hover{background:#fff6e2}
+.btn-line{border:1px solid rgba(236,226,204,.45);color:var(--pale)}
+.btn-line:hover{border-color:var(--pale)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+
+.seam{height:90px}
+.seam.a{background:linear-gradient(var(--dawn),var(--morning))}
+.seam.b{background:linear-gradient(var(--morning),var(--afternoon))}
+.seam.c{background:linear-gradient(var(--afternoon),var(--dusk))}
+
+/* ================= HOME ================= */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:url(art/eriador-map.jpg) 78% 40%/min(1500px,140%) auto no-repeat;mix-blend-mode:multiply;opacity:.14;
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.35) 40%,#000 70%);mask-image:linear-gradient(90deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.35) 40%,#000 70%)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:center;padding-block:56px 72px}
+.hero .logo{width:min(560px,100%);margin:0 0 10px -10px}
+.hero .lede{font-size:1.28rem;line-height:1.55;max-width:34ch;margin:0}
+.hero .note{margin-top:18px;font-style:italic;color:var(--ink-soft);font-size:.95rem}
+.plate{background:#faf4e4;padding:14px 14px 12px;border:1px solid rgba(43,33,22,.2);max-width:360px;justify-self:end;width:100%}
+.plate img{width:100%}
+.plate figcaption{color:var(--ink-soft)}
+
+.letter{background:var(--morning)}
+.letter .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:56px;align-items:start;padding-block:24px 40px}
+.letter figure img{width:100%;max-width:340px}
+.letter figcaption{color:var(--ink-soft)}
+.letter .date{font-style:italic;color:var(--ink-soft);margin:0 0 6px}
+.letter .body{font-size:1.18rem;max-width:56ch}
+.letter .sig{font-family:var(--f-head);font-style:italic;font-size:1.35rem;margin-top:8px}
+.letter .more{margin-top:18px}
+
+.game{background:var(--afternoon)}
+.game .wrap{padding-block:30px 40px}
+.game .intro{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:end;margin-bottom:34px}
+.game .intro p{margin:0;max-width:52ch}
+.shots{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px;align-items:start}
+.shots figure img{width:100%;border:1px solid rgba(43,33,22,.35)}
+.shots figcaption{color:var(--ink-soft)}
+.shots .side{display:grid;gap:26px}
+.facts{list-style:none;margin:0;padding:0;border-top:1px solid rgba(43,33,22,.3)}
+.facts li{padding:10px 0;border-bottom:1px solid rgba(43,33,22,.3);display:grid;grid-template-columns:minmax(0,9rem) 1fr;gap:12px}
+.facts b{font-weight:500}
+
+.eriador{position:relative;isolation:isolate;background:var(--dusk);color:var(--pale)}
+.eriador::before{content:"";position:absolute;inset:0;z-index:-1;background:url(art/eriador-map.jpg) center 30%/min(1600px,180%) auto no-repeat;filter:invert(1);mix-blend-mode:screen;opacity:.09}
+.eriador .wrap{padding-block:40px 80px}
+.eriador .head{max-width:640px;margin-bottom:34px}
+.eriador .head p{color:var(--pale-soft);margin:0}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;align-items:start}
+.gallery figure img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.gallery figcaption{color:var(--pale-soft)}
+
+.angmar{position:relative;isolation:isolate;background:var(--night);color:var(--pale);overflow:hidden}
+.angmar::before{content:"";position:absolute;inset:0;z-index:-2;background:url(art/carn-dum-lotro.jpg) center 35%/cover no-repeat}
+.angmar::after{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(var(--dusk) 0%,rgba(59,49,65,0) 22%),
+  linear-gradient(0deg,var(--night) 0%,rgba(7,9,13,.55) 45%,rgba(7,9,13,.2) 100%),
+  linear-gradient(90deg,rgba(7,9,13,.85) 0%,rgba(7,9,13,0) 70%)}
+.angmar .wrap{padding-block:clamp(160px,22vw,260px) 80px}
+.angmar h2{font-size:clamp(2.4rem,5.4vw,4rem)}
+.angmar p{max-width:44ch;color:#d8cfbe;font-size:1.15rem}
+.angmar figcaption{margin-top:40px;color:#8f877a}
+
+/* ================= FAQ ================= */
+.faq-head{position:relative;isolation:isolate;overflow:hidden}
+.faq-head .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:48px;align-items:center;padding-block:48px 40px}
+.faq-head h1{font-size:clamp(2.4rem,5vw,3.6rem)}
+.faq-head p{max-width:46ch;font-size:1.15rem;margin:0}
+.search{margin-top:26px;max-width:520px}
+.search label{display:block;font-size:.95rem;color:var(--ink-soft);margin-bottom:6px}
+.faq-head .plate{transform:none}
+.faq-body{background:linear-gradient(var(--dawn),var(--morning) 70%)}
+.faq-body .wrap{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr);gap:48px;padding-block:20px 70px;align-items:start}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
+.toc p{font-style:italic;color:var(--ink-soft);margin:0 0 8px;font-size:.95rem}
+.toc ul{list-style:none;margin:0;padding:0;border-left:1px solid rgba(43,33,22,.25)}
+.toc button{display:block;text-align:left;padding:5px 0 5px 14px;color:var(--ink-soft);font-size:1rem;margin-left:-1px;border-left:2px solid transparent}
+.toc button:hover{color:var(--red);border-left-color:var(--red)}
+.faq-group{margin-bottom:44px;scroll-margin-top:24px}
+.faq-group h2{font-size:clamp(1.6rem,3vw,2.1rem);margin-bottom:6px}
+.faq-group details{border-bottom:1px solid rgba(43,33,22,.22)}
+.faq-group details:first-of-type{border-top:1px solid rgba(43,33,22,.22)}
+.faq-group summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;font-size:1.12rem;font-weight:500}
+.faq-group summary::-webkit-details-marker{display:none}
+.faq-group summary::after{content:"+";font-family:var(--f-head);font-size:1.6rem;line-height:1;color:var(--red);transition:transform .2s}
+.faq-group details[open] summary::after{transform:rotate(45deg)}
+.faq-group summary:hover{color:var(--red)}
+.answer{padding:0 0 18px;max-width:62ch}
+.answer p:last-child{margin-bottom:0}
+.answer ol{margin:0 0 1em;padding-left:1.3em}
+.empty{font-style:italic;color:var(--ink-soft)}
+.faq-end{background:var(--dusk);color:var(--pale)}
+.faq-end .wrap{padding-block:56px 64px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:end;justify-content:space-between}
+.faq-end h2{margin:0 0 6px}
+.faq-end p{margin:0;color:var(--pale-soft);max-width:48ch}
+
+/* ================= FORMS (shared) ================= */
+.field{display:grid;gap:5px;margin-bottom:18px}
+.field label{font-size:1rem;font-weight:500}
+.field .hint{font-size:.9rem;color:var(--hint);margin:0}
+.field .err{font-size:.92rem;color:var(--err);margin:0}
+.field .err:empty{display:none}
+.input{font:inherit;font-size:1.05rem;width:100%;padding:10px 12px;border-radius:2px;border:1px solid var(--line);background:var(--fieldbg);color:var(--fieldfg)}
+.input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.input[aria-invalid="true"]{border-color:var(--err)}
+.pw{position:relative}
+.pw .input{padding-right:70px}
+.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--hint);padding:4px 6px}
+.check{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;margin-bottom:18px;font-size:1rem}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--red)}
+.form-row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.form-row .check{margin:0}
+.submit{width:100%;margin-top:6px}
+.switch{margin-top:22px;font-size:1rem}
+.done{border-left:3px solid var(--gold);padding:6px 0 6px 18px}
+.done h2{font-size:clamp(1.7rem,3vw,2.2rem);margin-bottom:8px}
+.mock-note{font-size:.88rem;font-style:italic;color:var(--hint);margin-top:20px}
+
+/* ================= AUTH VIEWS ================= */
+.auth{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);min-height:min(860px,calc(100dvh - 120px))}
+.auth .art{position:relative;overflow:hidden;background:var(--night)}
+.auth .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.auth .art figcaption{position:absolute;left:16px;right:16px;bottom:14px;margin:0;color:#f3ead8;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.auth .pane{padding-block:56px 70px;display:flex;align-items:flex-start}
+.auth .pane-in{width:100%;max-width:470px;margin-inline:clamp(0px,6vw,90px) auto}
+.auth h1{font-size:clamp(2.3rem,4.4vw,3.2rem);margin-bottom:10px}
+.auth .intro{margin:0 0 28px;max-width:40ch}
+.auth .pane{--line:rgba(43,33,22,.35);--fieldbg:var(--field);--fieldfg:var(--ink);--hint:var(--ink-soft);--err:var(--error)}
+
+/* create account: morning */
+.v-create .pane{background:var(--morning)}
+.v-create .art img{object-position:50% 30%}
+/* sign in: evening at the Pony */
+.v-signin .pane{background:var(--dusk);color:var(--pale);
+  --line:rgba(236,226,204,.3);--fieldbg:#2c2433;--fieldfg:var(--pale);--hint:var(--pale-soft);--err:#f0a08e}
+.v-signin .art img{object-position:40% 50%}
+.v-signin .btn-red{background:var(--pale);color:var(--ink)}
+.v-signin .btn-red:hover{background:#fff6e2}
+.v-signin a{color:var(--pale)}
+
+.strength{height:4px;background:rgba(43,33,22,.15);border-radius:2px;overflow:hidden;margin-top:2px}
+.strength i{display:block;height:100%;width:0;background:var(--red);transition:width .2s,background .2s}
+
+footer{background:var(--night);color:#8f877a;font-size:.92rem;border-top:1px solid #1b1d24}
+footer .wrap{display:grid;gap:12px;padding-block:28px 40px}
+footer nav{display:flex;flex-wrap:wrap;gap:4px 22px}
+footer nav a{color:#cfc6b4;text-decoration:none}
+footer nav a:hover{text-decoration:underline}
+footer p{margin:0;max-width:92ch}
+
+@media (max-width:880px){
+  .hero .wrap,.letter .wrap,.game .intro,.shots,.faq-head .wrap,.faq-body .wrap{grid-template-columns:1fr;gap:30px}
+  .plate{justify-self:start;max-width:320px}
+  .gallery{grid-template-columns:1fr}
+  .letter figure img{max-width:260px}
+  .seam{height:60px}
+  .toc{position:static}
+  .toc ul{display:flex;flex-wrap:wrap;gap:4px 16px;border-left:0}
+  .toc button{padding:2px 0;border-left:0;text-decoration:underline;text-decoration-color:rgba(43,33,22,.3)}
+  .auth{grid-template-columns:1fr;min-height:0}
+  .auth .art{height:230px}
+  .auth .pane{padding-block:36px 56px}
+  .auth .pane-in{margin-inline:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="review gutter"><div class="wrap">
+  <span>Mockup v2 · Demo only: copyrighted Tolkien, Nasmith, Lee and LOTRO art · <span class="tbc">Dotted underline</span> = detail to confirm</span>
+  <nav aria-label="Mockup screens">
+    <a href="#home" data-view-link="home">Home</a><a href="#faq" data-view-link="faq">FAQ</a><a href="#sign-in" data-view-link="sign-in">Sign in</a><a href="#create-account" data-view-link="create-account">Create account</a>
+  </nav>
+</div></div>
+
+<header class="top gutter"><div class="wrap">
+  <a class="home-link" href="#home"><img class="mark" src="art/eoa-logo.png" width="900" height="512" alt="Echoes of Angmar home"></a>
+  <nav aria-label="Main"><ul>
+    <li><a href="#home" data-view-link="home">About</a></li>
+    <li><a href="#faq" data-view-link="faq">FAQ</a></li>
+    <li><button type="button">Discord</button></li>
+    <li><a href="#sign-in" data-view-link="sign-in">Sign in</a></li>
+    <li><a href="#create-account" data-view-link="create-account" class="join">Create account</a></li>
+  </ul></nav>
+</div></header>
+
+<!-- ======================= HOME ======================= -->
+<main data-view="home">
+  <section class="hero gutter" aria-labelledby="h-hero"><div class="wrap">
+    <div>
+      <h1 id="h-hero" class="sr-only">Echoes of Angmar</h1>
+      <img class="logo" src="art/eoa-logo.png" width="900" height="512" alt="">
+      <p class="lede">A Lord of the Rings Online server that keeps Shadows of Angmar as it was in 2007: Eriador before Moria, and the Witch-king's war in the North.</p>
+      <div class="actions"><a href="#create-account" class="btn btn-red">Create an account</a><a href="#sign-in" class="btn btn-quiet">Sign in</a></div>
+      <p class="note">Already played here? Your account and characters carry over.</p>
+    </div>
+    <figure class="plate">
+      <img src="art/hobbiton-tolkien.jpg" width="351" height="460" alt="Tolkien's painting of Hobbiton: a winding road, a mill by the water and the Hill above.">
+      <figcaption>J.R.R. Tolkien, <i>The Hill: Hobbiton-across-the-Water</i></figcaption>
+    </figure>
+  </div></section>
+
+  <div class="seam a" aria-hidden="true"></div>
+
+  <section class="letter gutter" aria-labelledby="h-letter"><div class="wrap">
+    <figure>
+      <img src="art/gildor-alan-lee.jpg" width="626" height="1009" alt="Alan Lee's painting of elves meeting the hobbits in a golden wood.">
+      <figcaption>Alan Lee, <i>Gildor and the Hobbits</i></figcaption>
+    </figure>
+    <div>
+      <p class="date">November 2026</p>
+      <h2 id="h-letter">From the new stewards</h2>
+      <div class="body">
+        <p>The original Echoes of Angmar team has stepped back after years of keeping the lights on. We are the people picking up the work.</p>
+        <p>The server stays online while we move it to new hardware. Accounts and characters move with it. We will post each step here and in Discord, so you always know what is happening and when.</p>
+        <p>Thank you to everyone who built this place and everyone who kept playing in it.</p>
+      </div>
+      <p class="sig">The Echoes of Angmar team</p>
+      <p class="more"><a href="#faq">Questions about the hand-over</a></p>
+    </div>
+  </div></section>
+
+  <div class="seam b" aria-hidden="true"></div>
+
+  <section class="game gutter" aria-labelledby="h-game"><div class="wrap">
+    <div class="intro">
+      <h2 id="h-game">The game as it was</h2>
+      <p>No expansions layered on top, no later systems reworking the old ones. Echoes of Angmar runs the original Shadows of Angmar release, so Eriador looks, plays and sounds the way it did at launch.</p>
+    </div>
+    <div class="shots">
+      <figure>
+        <img src="art/prancing-pony-lotro.jpg" width="1400" height="788" alt="The Prancing Pony inn in Bree at dusk, its windows lit.">
+        <figcaption>The Prancing Pony, Bree. In-game, <i>The Lord of the Rings Online</i>.</figcaption>
+      </figure>
+      <div class="side">
+        <figure>
+          <img src="art/rivendell-lotro.jpg" width="1400" height="788" alt="The valley of Rivendell under mist and autumn trees.">
+          <figcaption>Rivendell. In-game, <i>The Lord of the Rings Online</i>.</figcaption>
+        </figure>
+        <ul class="facts">
+          <li><b>Classes</b><span>Burglar, Captain, Champion, Guardian, Hunter, Lore-master, Minstrel</span></li>
+          <li><b>Peoples</b><span>Man, Elf, Dwarf, Hobbit</span></li>
+          <li><b>Story</b><span>The original Volume I epic</span></li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <div class="seam c" aria-hidden="true"></div>
+
+  <section class="eriador gutter" aria-labelledby="h-eriador"><div class="wrap">
+    <div class="head">
+      <h2 id="h-eriador">Eriador, from the Shire to the fells</h2>
+      <p>Green hills give way to old forest, burnt ruins and cold stone. The further north you go, the darker it gets.</p>
+    </div>
+    <div class="gallery">
+      <figure><img src="art/old-man-willow.jpg" width="513" height="358" alt="Tolkien's drawing of a great gnarled willow beside a stream."><figcaption>J.R.R. Tolkien, <i>Old Man Willow</i></figcaption></figure>
+      <figure><img src="art/rhudaur-nasmith.jpg" width="450" height="305" alt="Ted Nasmith's painting of a blue, misty river valley with a ruined tower on a crag."><figcaption>Ted Nasmith, <i>View of Rhudaur</i></figcaption></figure>
+      <figure><img src="art/weathertop-nasmith.jpg" width="530" height="338" alt="Ted Nasmith's painting of black riders climbing Weathertop at night."><figcaption>Ted Nasmith, <i>Fire on Weathertop</i></figcaption></figure>
+    </div>
+  </div></section>
+
+  <section class="angmar gutter" aria-labelledby="h-angmar"><div class="wrap">
+    <h2 id="h-angmar">Angmar is waiting</h2>
+    <p>Make an account, install the client and step out into Eriador. The Witch-king has been patient.</p>
+    <div class="actions"><a href="#create-account" class="btn btn-pale">Create an account</a><button type="button" class="btn btn-line">Join the Discord</button><a href="#faq" class="btn btn-line">Read the FAQ</a></div>
+    <figure><figcaption>Carn Dûm. In-game, <i>The Lord of the Rings Online</i>.</figcaption></figure>
+  </div></section>
+</main>
+
+<!-- ======================= FAQ ======================= -->
+<main data-view="faq" hidden>
+  <section class="faq-head gutter" aria-labelledby="h-faq"><div class="wrap">
+    <div>
+      <h1 id="h-faq">Questions</h1>
+      <p>Getting started, your account, the game itself and the hand-over. If the answer is not here, ask in Discord and someone will help.</p>
+      <div class="search">
+        <label for="faq-q">Search the questions</label>
+        <input id="faq-q" class="input" type="search" placeholder="Try “client”, “password” or “Warden”" autocomplete="off" style="--line:rgba(43,33,22,.35);--fieldbg:var(--field);--fieldfg:var(--ink)">
+      </div>
+    </div>
+    <figure class="plate">
+      <img src="art/thror-map.jpg" width="640" height="480" alt="Thror's Map from The Hobbit: a hand-drawn map with runes, a dragon and the Lonely Mountain.">
+      <figcaption>J.R.R. Tolkien, <i>Thror's Map</i></figcaption>
+    </figure>
+  </div></section>
+
+  <section class="faq-body gutter"><div class="wrap">
+    <nav class="toc" aria-label="FAQ topics">
+      <p>Topics</p>
+      <ul>
+        <li><button type="button" data-jump="faq-start">Getting started</button></li>
+        <li><button type="button" data-jump="faq-account">Accounts &amp; characters</button></li>
+        <li><button type="button" data-jump="faq-game">The game</button></li>
+        <li><button type="button" data-jump="faq-community">Community</button></li>
+        <li><button type="button" data-jump="faq-handover">The hand-over</button></li>
+      </ul>
+    </nav>
+    <div id="faq-list">
+      <section class="faq-group" id="faq-start" aria-labelledby="fh-start">
+        <h2 id="fh-start">Getting started</h2>
+        <details><summary>What is Echoes of Angmar?</summary><div class="answer"><p>A fan-run server for The Lord of the Rings Online that runs the game as it was during Shadows of Angmar, before the Mines of Moria expansion. It is not run by or connected to Standing Stone Games.</p></div></details>
+        <details><summary>Does it cost anything?</summary><div class="answer"><p><span class="tbc">No. Echoes of Angmar is free to play and has no store.</span> If we ever ask for donations to cover hosting, they will never buy anything in game.</p></div></details>
+        <details><summary>What do I need to play?</summary><div class="answer"><p>A <span class="tbc">Windows PC</span>, a copy of the game client and the <span class="tbc">Echoes of Angmar launcher</span>. You can download both after you create an account.</p></div></details>
+        <details><summary>How do I install it?</summary><div class="answer"><ol><li>Create an account on this site and confirm your email.</li><li>Download the <span class="tbc">launcher and client</span> from your account page.</li><li>Run the launcher and point it at the client folder.</li><li>Sign in with your account name and password.</li></ol><p>If the launcher will not start, the <span class="tbc">#tech-help</span> channel in Discord can walk you through it.</p></div></details>
+      </section>
+
+      <section class="faq-group" id="faq-account" aria-labelledby="fh-account">
+        <h2 id="fh-account">Accounts &amp; characters</h2>
+        <details><summary>I played before the hand-over. Do I need a new account?</summary><div class="answer"><p>No. Existing accounts and characters carry over. Sign in with the same account name and password you used before.</p></div></details>
+        <details><summary>I forgot my password.</summary><div class="answer"><p>Use <a href="#sign-in">Forgot your password?</a> on the sign-in page. We will email a reset link to the address on your account.</p></div></details>
+        <details><summary>Can I have more than one account?</summary><div class="answer"><p><span class="tbc">Yes, up to two per person.</span> Running more than one character at the same time in group content is covered by the rules in Discord.</p></div></details>
+        <details><summary>How do I delete my account?</summary><div class="answer"><p>From your account page, or by asking a <span class="tbc">staff member</span> in Discord. Deleting an account removes its characters and cannot be undone.</p></div></details>
+      </section>
+
+      <section class="faq-group" id="faq-game" aria-labelledby="fh-game">
+        <h2 id="fh-game">The game</h2>
+        <details><summary>Which version of the game is this?</summary><div class="answer"><p>The Shadows of Angmar era, before Mines of Moria. The level cap is 50 and the world ends where it did then.</p></div></details>
+        <details><summary>Can I play a Warden or Runekeeper?</summary><div class="answer"><p>No. Both classes arrived with Mines of Moria. You can play the seven original classes: Burglar, Captain, Champion, Guardian, Hunter, Lore-master and Minstrel.</p></div></details>
+        <details><summary>Is everything working?</summary><div class="answer"><p>Not quite. The server is a recreation, so some quests, skills and instances still have bugs. Report anything you find in <span class="tbc">#bug-reports</span> on Discord, with your character name and where it happened.</p></div></details>
+        <details><summary>Is there a cash shop?</summary><div class="answer"><p>No. Shadows of Angmar never had one, and neither do we.</p></div></details>
+      </section>
+
+      <section class="faq-group" id="faq-community" aria-labelledby="fh-community">
+        <h2 id="fh-community">Community</h2>
+        <details><summary>Where do players talk?</summary><div class="answer"><p>In Discord. That is where we post news, downtime, events and patch notes, and where staff answer questions.</p></div></details>
+        <details><summary>Are there rules?</summary><div class="answer"><p>Yes, and they are short: treat people well, do not cheat or abuse bugs, and keep names fitting for Middle-earth. The full rules are pinned in Discord.</p></div></details>
+        <details><summary>Can I help run the server?</summary><div class="answer"><p>Yes. We are looking for developers, game masters and people who can write, test and moderate. Say hello in <span class="tbc">#volunteers</span>.</p></div></details>
+      </section>
+
+      <section class="faq-group" id="faq-handover" aria-labelledby="fh-handover">
+        <h2 id="fh-handover">The hand-over</h2>
+        <details><summary>Why did the server change hands?</summary><div class="answer"><p>The original developers retired from the project in October 2026 and asked the community for someone to carry it on. We stepped up.</p></div></details>
+        <details><summary>Will there be downtime?</summary><div class="answer"><p>Yes, while the server moves to new hardware. We will announce the date and expected length in Discord <span class="tbc">at least a week</span> in advance.</p></div></details>
+        <details><summary>Is my character safe?</summary><div class="answer"><p>Yes. Account and character data come across with the server. If anything looks wrong after the move, tell us in Discord and we will check it against the backup.</p></div></details>
+      </section>
+      <p class="empty" id="faq-empty" hidden></p>
+    </div>
+  </div></section>
+
+  <section class="faq-end gutter" aria-labelledby="h-faq-end"><div class="wrap">
+    <div><h2 id="h-faq-end">Still stuck?</h2><p>Ask in Discord. Someone who has been through it will usually answer within the hour.</p></div>
+    <div class="actions" style="margin:0"><button type="button" class="btn btn-pale">Join the Discord</button><a href="#create-account" class="btn btn-line">Create an account</a></div>
+  </div></section>
+</main>
+
+<!-- ======================= SIGN IN ======================= -->
+<main data-view="sign-in" class="v-signin" hidden>
+  <div class="auth">
+    <figure class="art">
+      <img src="art/prancing-pony-lotro.jpg" width="1400" height="788" alt="The Prancing Pony inn in Bree at dusk, its windows lit.">
+      <figcaption>The Prancing Pony, Bree. In-game, <i>The Lord of the Rings Online</i>.</figcaption>
+    </figure>
+    <div class="pane gutter"><div class="pane-in">
+      <div id="signin-panel">
+        <h1>Welcome back</h1>
+        <p class="intro">Sign in with your Echoes of Angmar account. Accounts from before the hand-over still work.</p>
+        <form id="signin-form" novalidate>
+          <div class="field">
+            <label for="si-name">Account name or email</label>
+            <input id="si-name" name="name" class="input" autocomplete="username" required value="BarlimanFan">
+            <p class="err" id="si-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="si-pass">Password</label>
+            <div class="pw"><input id="si-pass" name="password" class="input" type="password" autocomplete="current-password" required><button type="button" data-reveal="si-pass">Show</button></div>
+            <p class="err" id="si-pass-err"></p>
+          </div>
+          <div class="form-row">
+            <label class="check" for="si-remember"><input id="si-remember" type="checkbox" checked><span>Keep me signed in</span></label>
+            <button type="button" id="to-forgot" style="text-decoration:underline;text-underline-offset:3px;font-size:1rem">Forgot your password?</button>
+          </div>
+          <button type="submit" class="btn btn-red submit">Sign in</button>
+        </form>
+        <p class="switch">New to Echoes of Angmar? <a href="#create-account">Create an account</a></p>
+      </div>
+
+      <div id="forgot-panel" hidden>
+        <h1>Reset your password</h1>
+        <p class="intro">Enter the email address on your account. We will send a link to choose a new password.</p>
+        <form id="forgot-form" novalidate>
+          <div class="field">
+            <label for="fp-email">Email</label>
+            <input id="fp-email" class="input" type="email" autocomplete="email" required>
+            <p class="err" id="fp-email-err"></p>
+          </div>
+          <button type="submit" class="btn btn-red submit">Send reset link</button>
+        </form>
+        <p class="switch"><button type="button" id="back-signin" style="text-decoration:underline;text-underline-offset:3px">Back to sign in</button></p>
+      </div>
+
+      <div id="signin-done" class="done" hidden tabindex="-1"></div>
+      <p class="mock-note">Mockup: these forms check what you type but send nothing.</p>
+    </div></div>
+  </div>
+</main>
+
+<!-- ======================= CREATE ACCOUNT ======================= -->
+<main data-view="create-account" class="v-create" hidden>
+  <div class="auth">
+    <figure class="art">
+      <img src="art/gildor-alan-lee.jpg" width="626" height="1009" alt="Alan Lee's painting of elves meeting the hobbits in a golden wood.">
+      <figcaption>Alan Lee, <i>Gildor and the Hobbits</i></figcaption>
+    </figure>
+    <div class="pane gutter"><div class="pane-in">
+      <div id="create-panel">
+        <h1>Create an account</h1>
+        <p class="intro">One account holds all your characters. You will use it to sign in here and in the game launcher.</p>
+        <form id="create-form" novalidate>
+          <div class="field">
+            <label for="ca-name">Account name</label>
+            <p class="hint" id="ca-name-hint">4 to 16 letters or numbers. This is not your character's name.</p>
+            <input id="ca-name" class="input" autocomplete="username" aria-describedby="ca-name-hint ca-name-err" required>
+            <p class="err" id="ca-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="ca-email">Email</label>
+            <p class="hint" id="ca-email-hint">We send a confirmation link here. We never share it.</p>
+            <input id="ca-email" class="input" type="email" autocomplete="email" aria-describedby="ca-email-hint ca-email-err" required>
+            <p class="err" id="ca-email-err"></p>
+          </div>
+          <div class="field">
+            <label for="ca-pass">Password</label>
+            <p class="hint" id="ca-pass-hint">At least 10 characters.</p>
+            <div class="pw"><input id="ca-pass" class="input" type="password" autocomplete="new-password" aria-describedby="ca-pass-hint ca-pass-err" required><button type="button" data-reveal="ca-pass">Show</button></div>
+            <div class="strength" aria-hidden="true"><i id="ca-strength"></i></div>
+            <p class="err" id="ca-pass-err"></p>
+          </div>
+          <div class="field">
+            <label for="ca-pass2">Confirm password</label>
+            <input id="ca-pass2" class="input" type="password" autocomplete="new-password" aria-describedby="ca-pass2-err" required>
+            <p class="err" id="ca-pass2-err"></p>
+          </div>
+          <label class="check" for="ca-rules"><input id="ca-rules" type="checkbox"><span>I have read the <a href="#faq">community rules</a> and will keep my character names fitting for Middle-earth.</span></label>
+          <p class="err" id="ca-rules-err" style="margin:-10px 0 16px;color:var(--error);font-size:.92rem"></p>
+          <button type="submit" class="btn btn-red submit">Create account</button>
+        </form>
+        <p class="switch">Already have an account? <a href="#sign-in">Sign in</a></p>
+      </div>
+      <div id="create-done" class="done" hidden tabindex="-1"></div>
+      <p class="mock-note" style="color:var(--ink-soft)">Mockup: this form checks what you type but sends nothing.</p>
+    </div></div>
+  </div>
+</main>
+
+<footer class="gutter"><div class="wrap">
+  <nav aria-label="Footer"><a href="#home">About</a><a href="#faq">FAQ</a><a href="#home">Discord</a><a href="#sign-in">Sign in</a><a href="#create-account">Create account</a></nav>
+  <p>Echoes of Angmar is a fan-run project. It is not affiliated with Standing Stone Games, Daybreak Games or Middle-earth Enterprises. The Lord of the Rings Online and Shadows of Angmar are trademarks of Middle-earth Enterprises.</p>
+  <p>Mockup artwork: J.R.R. Tolkien (Tolkien Estate), Alan Lee, Ted Nasmith, and in-game screenshots of The Lord of the Rings Online. Used here for internal demonstration only; replace before publishing.</p>
+</div></footer>
+
+<script>
+(() => {
+  // ---------- views ----------
+  const VIEWS = ['home', 'faq', 'sign-in', 'create-account'];
+  const TITLES = { home: 'Echoes of Angmar Home', faq: 'Echoes of Angmar FAQ', 'sign-in': 'Echoes of Angmar Sign in', 'create-account': 'Echoes of Angmar Create account' };
+  function show(){
+    const v = location.hash.slice(1);
+    const view = VIEWS.includes(v) ? v : 'home';
+    document.querySelectorAll('[data-view]').forEach(m => { m.hidden = m.dataset.view !== view; });
+    document.querySelectorAll('[data-view-link]').forEach(a => { if (a.dataset.viewLink === view) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    document.title = TITLES[view];
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show);
+  show();
+
+  // ---------- FAQ ----------
+  const q = document.getElementById('faq-q'), groups = [...document.querySelectorAll('.faq-group')], empty = document.getElementById('faq-empty');
+  q.addEventListener('input', () => {
+    const term = q.value.trim().toLowerCase(); let any = false;
+    groups.forEach(g => {
+      let n = 0;
+      g.querySelectorAll('details').forEach(d => {
+        const hit = !term || d.textContent.toLowerCase().includes(term);
+        d.hidden = !hit; if (hit) n++;
+        if (term && hit) d.open = true; else if (!term) d.open = false;
+      });
+      g.hidden = n === 0; if (n) any = true;
+    });
+    empty.hidden = any;
+    if (!any) empty.textContent = `No questions mention “${q.value.trim()}”. Ask in Discord and we will add the answer here.`;
+  });
+  document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => {
+    const t = document.getElementById(b.dataset.jump); if (!t) return;
+    t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    const first = t.querySelector('details:not([hidden])'); if (first) first.open = true;
+  }));
+
+  // ---------- form helpers ----------
+  const $ = id => document.getElementById(id);
+  function setErr(input, msg){ const e = $(input.id + '-err'); if (e) e.textContent = msg || ''; input.setAttribute('aria-invalid', msg ? 'true' : 'false'); return !msg; }
+  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  document.querySelectorAll('[data-reveal]').forEach(b => b.addEventListener('click', () => {
+    const i = $(b.dataset.reveal); const showIt = i.type === 'password'; i.type = showIt ? 'text' : 'password'; b.textContent = showIt ? 'Hide' : 'Show';
+  }));
+  function finish(panel, done, html){ panel.hidden = true; done.innerHTML = html; done.hidden = false; done.focus(); }
+
+  // ---------- sign in ----------
+  const siName = $('si-name'), siPass = $('si-pass');
+  const vName = () => setErr(siName, siName.value.trim() ? '' : 'Enter your account name or the email on your account.');
+  const vPass = () => setErr(siPass, siPass.value ? '' : 'Enter your password.');
+  siName.addEventListener('blur', vName); siPass.addEventListener('blur', vPass);
+  $('signin-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const ok = [vName(), vPass()].every(Boolean);
+    if (!ok){ (siName.getAttribute('aria-invalid') === 'true' ? siName : siPass).focus(); return; }
+    const who = siName.value.trim().replace(/[<>&"]/g, '');
+    finish($('signin-panel'), $('signin-done'), `<h2>Signed in as ${who}</h2><p>On the real site this opens your account page, with the launcher download and your characters.</p><p><a href="#home">Back to the home page</a></p>`);
+  });
+  $('to-forgot').addEventListener('click', () => { $('signin-panel').hidden = true; $('forgot-panel').hidden = false; $('fp-email').focus(); });
+  $('back-signin').addEventListener('click', () => { $('forgot-panel').hidden = true; $('signin-panel').hidden = false; siName.focus(); });
+  const fpEmail = $('fp-email');
+  const vFp = () => setErr(fpEmail, !fpEmail.value.trim() ? 'Enter the email address on your account.' : emailOk(fpEmail.value.trim()) ? '' : 'That does not look like an email address. Check for a missing @ or dot.');
+  fpEmail.addEventListener('blur', vFp);
+  $('forgot-form').addEventListener('submit', e => {
+    e.preventDefault(); if (!vFp()){ fpEmail.focus(); return; }
+    finish($('forgot-panel'), $('signin-done'), `<h2>Check your email</h2><p>If an account uses that address, a reset link is on its way. It works for one hour.</p><p><button type="button" id="done-back" style="text-decoration:underline;text-underline-offset:3px">Back to sign in</button></p>`);
+    $('done-back').addEventListener('click', () => { $('signin-done').hidden = true; $('signin-panel').hidden = false; siName.focus(); });
+  });
+
+  // ---------- create account ----------
+  const caName = $('ca-name'), caEmail = $('ca-email'), caPass = $('ca-pass'), caPass2 = $('ca-pass2'), caRules = $('ca-rules');
+  const TAKEN = ['strider', 'gandalf', 'barliman'];
+  const vCaName = () => { const v = caName.value.trim();
+    return setErr(caName, !v ? 'Choose an account name.' : !/^[A-Za-z0-9]+$/.test(v) ? 'Use only letters and numbers, with no spaces.' : v.length < 4 || v.length > 16 ? `Use 4 to 16 characters. This one has ${v.length}.` : TAKEN.includes(v.toLowerCase()) ? 'That account name is taken. Try adding a number.' : ''); };
+  const vCaEmail = () => { const v = caEmail.value.trim(); return setErr(caEmail, !v ? 'Enter your email address.' : emailOk(v) ? '' : 'That does not look like an email address. Check for a missing @ or dot.'); };
+  const vCaPass = () => setErr(caPass, !caPass.value ? 'Choose a password.' : caPass.value.length < 10 ? `Use at least 10 characters. This one has ${caPass.value.length}.` : '');
+  const vCaPass2 = () => setErr(caPass2, !caPass2.value ? 'Type the password again.' : caPass2.value !== caPass.value ? 'The two passwords do not match.' : '');
+  const vRules = () => { const m = caRules.checked ? '' : 'Tick the box to confirm you have read the rules.'; $('ca-rules-err').textContent = m; return !m; };
+  caName.addEventListener('blur', vCaName); caEmail.addEventListener('blur', vCaEmail); caPass.addEventListener('blur', vCaPass); caPass2.addEventListener('blur', vCaPass2);
+  caRules.addEventListener('change', () => { if (caRules.checked) $('ca-rules-err').textContent = ''; });
+  caPass.addEventListener('input', () => {
+    const v = caPass.value; let s = 0; if (v.length >= 10) s++; if (v.length >= 14) s++; if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++; if (/\d/.test(v) || /[^A-Za-z0-9]/.test(v)) s++;
+    const bar = $('ca-strength'); bar.style.width = (v ? Math.max(12, s * 25) : 0) + '%'; bar.style.background = s >= 3 ? '#4f6b2e' : s === 2 ? '#b48a3c' : '#7d2416';
+  });
+  $('create-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const checks = [[caName, vCaName()], [caEmail, vCaEmail()], [caPass, vCaPass()], [caPass2, vCaPass2()], [caRules, vRules()]];
+    const bad = checks.find(([, ok]) => !ok); if (bad){ bad[0].focus(); return; }
+    const mail = caEmail.value.trim().replace(/[<>&"]/g, '');
+    finish($('create-panel'), $('create-done'), `<h2>Check your email</h2><p>We sent a confirmation link to <b>${mail}</b>. Open it to activate your account, then come back and sign in to download the launcher.</p><p>Nothing there after a few minutes? Check your spam folder, or <button type="button" style="text-decoration:underline;text-underline-offset:3px">send it again</button>.</p><p><a href="#sign-in">Go to sign in</a></p>`);
+  });
+})();
+</script>
+
+</body>
+</html>
